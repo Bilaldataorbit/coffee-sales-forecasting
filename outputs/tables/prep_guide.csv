@@ -1,0 +1,10 @@
+coffee_name,Mon-Fri median,Mon-Fri p80,Sat-Sun median,Sat-Sun p80
+Americano,5.0,7.0,2.0,3.4
+Americano with Milk,3.0,4.0,2.0,3.0
+Latte,3.0,4.0,0.5,1.0
+Cappuccino,2.0,4.0,1.0,2.0
+Cocoa,2.0,3.2,0.0,1.0
+Hot Chocolate,1.0,2.0,0.0,1.0
+Espresso,1.0,1.0,0.0,0.4
+Cortado,0.0,0.0,0.0,0.0
+TOTAL,17.0,25.2,5.5,11.8

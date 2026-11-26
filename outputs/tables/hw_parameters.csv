@@ -1,0 +1,4 @@
+model,alpha (level),beta (trend),gamma (seasonal),phi (damping),AIC
+HW_no_trend,0.167,,0.0,,3520.7772
+HW_trend,0.1649,0.0,0.0,,3524.2945
+HW_damped,0.1646,0.0,0.0,0.9054,3526.1143
