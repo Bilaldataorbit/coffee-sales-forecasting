@@ -84,7 +84,16 @@ with st.sidebar:
 
 mask = (df["Date"].dt.date >= d0) & (df["Date"].dt.date <= d1) & df["coffee_name"].isin(sel_products)
 dff = df[mask]
-dd = daily.loc[str(d0):str(d1)]
+# Daily table that follows the product filter (shop days with no sale of the chosen product count as 0)
+dsel = daily
+if set(sel_products) != set(products):
+    per_day = df[df["coffee_name"].isin(sel_products)].groupby("Date").agg(
+        revenue=("money", "sum"), transactions=("money", "size"))
+    dsel = daily.copy()
+    dsel["revenue"] = per_day["revenue"].reindex(dsel.index).fillna(0)
+    dsel["transactions"] = per_day["transactions"].reindex(dsel.index).fillna(0)
+    dsel["revenue_ma7"] = dsel["revenue"].where(dsel["reported"]).rolling(7, min_periods=4).mean()
+dd = dsel.loc[str(d0):str(d1)]
 
 tab_over, tab_pat, tab_fc, tab_bt, tab_rec = st.tabs(
     ["Overview", "Patterns", "Forecast", "Backtest", "Recommendations"])
@@ -95,7 +104,7 @@ with tab_over:
     c = st.columns(4)
     c[0].metric("Total revenue", f"{dff['money'].sum():,.0f}")
     c[1].metric("Transactions", f"{len(dff):,}")
-    c[2].metric("Avg revenue per day with sales", f"{(dff['money'].sum() / max(dff['Date'].nunique(), 1)):,.0f}")
+    c[2].metric("Avg revenue per day with sales", f"{(dff['money'].sum() / max(len(rep), 1)):,.0f}")
     c[3].metric("Avg price per sale", f"{dff['money'].mean():,.2f}" if len(dff) else "-")
 
     fig = go.Figure()
@@ -128,7 +137,12 @@ with tab_pat:
     if base.empty:
         st.warning("No sales for this selection.")
     else:
-        n_days = base.groupby("Weekday", observed=True)["Date"].nunique().reindex(WEEK)
+        # Count every shop day (any product sold), so a day without the chosen product counts as zero
+        if scope == "Selected date range":
+            days_all = df[(df["Date"].dt.date >= d0) & (df["Date"].dt.date <= d1)]
+        else:
+            days_all = df[df["Date"] > LAST - pd.Timedelta(days=RECENT_DAYS)]
+        n_days = days_all.groupby("Weekday", observed=True)["Date"].nunique().reindex(WEEK)
         col1, col2 = st.columns(2)
         wk_rev = (base.groupby("Weekday", observed=True)["money"].sum().reindex(WEEK) / n_days)
         col1.plotly_chart(px.bar(x=WEEK, y=wk_rev.values, title="Average revenue by weekday",
