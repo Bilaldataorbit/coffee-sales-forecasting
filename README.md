@@ -80,6 +80,21 @@ The **Excel workbook** repeats the work with live formulas: Holt-Winters with So
 - The product mix is **not stable** (Americano's monthly share ranges over 21 percentage points), so the product split is only a rough guide.
 - Plan with a range between methods, not one number.
 
+## Key charts
+
+**Daily revenue and the level shift in Feb 2025**
+
+![Daily revenue](outputs/figures/01_daily_revenue.png)
+![Level shift](outputs/figures/02_level_shift.png)
+
+**Which method forecasts best? (35 rolling backtests)**
+
+![Final MAE comparison](outputs/figures/15_final_mae.png)
+
+**When is the shop busiest? (weekday x hour)**
+
+![Weekday hour heatmap](outputs/figures/21_weekday_hour_heatmap.png)
+
 ## Limitations
 
 - Only 13 months of data: yearly seasonality cannot be measured.
