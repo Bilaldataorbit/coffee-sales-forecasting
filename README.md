@@ -2,6 +2,8 @@
 
 Forecasting daily coffee-shop sales with Excel and Python, tested honestly with rolling backtests.
 
+ **[Live dashboard](https://coffee-sales-forecasting-zbha9jfqwanpgk5gih8qzp.streamlit.app/)**                  
+
 > **Historical exercise.** The data ends on 23 Mar 2025, so the forecast window (24 Mar to 22 Apr 2025) is in the past. This is a portfolio project, not a live business forecast. The source file does not state a currency, so revenue is shown as plain numbers.
 
 ## Questions
